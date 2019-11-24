@@ -1,0 +1,44 @@
+
+
+' 1. Loop through every worksheet and select the ticker contents.
+' 2. Copy the ticker contents and paste it into the new first tab
+
+Sub Alphabetical_testing()
+    
+    Dim WorksheetName As String
+    Dim ticker As String
+    Dim Volume As Long
+    Dim year_close As Double
+    Dim yearly_change As Double
+    Dim percent_change As Double
+    
+    ' Add a sheet named "Combined Ticker Data"
+    Sheets.Add.Name = "Combined_Ticker_Data"
+    'move created sheet to be first sheet
+    Sheets("Combined_Ticker_Data").Move Before:=Sheets(1)
+    ' Specify the location of the combined sheet
+    Set combined_sheet = Worksheets("Combined_Ticker_Data")
+
+    ' Loop through all sheets
+    For Each ws In Worksheets
+
+        ' Find the last row of the combined sheet after each paste
+        ' Add 1 to get first empty row
+        lastRow = combined_sheet.Cells(Rows.Count, "A").End(xlUp).Row + 1
+
+        ' Find the last row of each worksheet
+        ' Subtract one to return the number of rows without header
+        lastRowState = ws.Cells(Rows.Count, "A").End(xlUp).Row - 1
+
+        ' Copy the contents of each ticker sheet into the combined sheet
+        combined_sheet.Range("A" & lastRow & ":P" & ((lastRowState - 1) + lastRow)).Value = ws.Range("A2:P" & (lastRowState + 1)).Value
+
+    Next ws
+
+    ' Copy the headers from sheet 1
+    combined_sheet.Range("A1:P1").Value = Sheets(2).Range("A1:P1").Value
+    
+    ' Autofit to display data
+    combined_sheet.Columns("A:P").AutoFit
+End Sub
+
