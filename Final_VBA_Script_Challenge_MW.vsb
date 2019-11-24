@@ -1,4 +1,3 @@
-Attribute VB_Name = "Module11"
 Sub VBAChallenge():
 
     ' Loop Through All Worksheets
